@@ -913,3 +913,77 @@ local RagdollDisabler = COB("Utility", {
 	["Default"] = false,
 	["HoverText"] = "Makes you ragdoll to bypass anticheat"
 })
+local Crosshair = COB("Render", {
+	["Name"] = "Crosshair",
+	["Function"] = function(callback)
+		if callback then
+			pcall(function()
+				ScriptSettings.Crosshair = true
+				local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+				mouse.Icon = "rbxassetid://9943168532"
+				mouse:GetPropertyChangedSignal("Icon"):Connect(function()
+				    if not ScriptSettings.Crosshair == true then return end
+				    mouse.Icon = "rbxassetid://9943168532"
+				end)
+			end)
+		else
+			pcall(function()
+				ScriptSettings.Crosshair = false
+				local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+				mouse.Icon = ""
+			end)
+		end
+	end,
+	["Default"] = false,
+	["HoverText"] = "Custom crosshair"
+})
+local HostCrasher = COB("Utility", {
+	["Name"] = "HostCrasher",
+	["Function"] = function(callback)
+		if callback then
+			pcall(function()
+				ScriptSettings.HostCrasher = true
+				for i,plr in pairs(game:GetService("Players"):GetChildren()) do
+                    local args = {
+                        [1] = "",
+                        [2] = {
+                            [1] = {
+                                ["userId"] = plr.UserId,
+                                ["name"] = plr.Name,
+                                ["displayName"] = plr.DisplayName
+                            }
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").rbxts_include.node_modules.net.out._NetManaged:FindFirstChild("CustomMatches:CohostPlayer"):FireServer(unpack(args))
+				end
+				while task.wait() do
+				    if not ScriptSettings.HostCrasher == true then return end
+				    for i,plr in pairs(game:GetService("Players"):GetChildren()) do
+                        local args = {
+                            [1] = "",
+                            [2] = {
+                                [1] = {
+                                    ["userId"] = plr.UserId,
+                                    ["name"] = plr.Name,
+                                    ["displayName"] = plr.DisplayName
+                                },
+                                [2] = math.random(1,999999999)
+                            }
+                        }
+                        game:GetService("ReplicatedStorage").rbxts_include.node_modules.net.out._NetManaged:FindFirstChild("CustomMatches:SetPlayerMaxHealth"):FireServer(unpack(args))
+				    end
+				end
+			end)
+		else
+			pcall(function()
+				ScriptSettings.HostCrasher = false
+			end)
+		end
+	end,
+	["Default"] = false,
+	["HoverText"] = "Requires you to be host to let it work"
+})
+GuiLibrary["MainGui"].ScaledGui.ClickGui.Version.Text = "vape private custom | v2.7"
+GuiLibrary["MainGui"].ScaledGui.ClickGui.MainWindow.TextLabel.Text = "vape private custom | v2.7"
+GuiLibrary["MainGui"].ScaledGui.ClickGui.Version.Version.Text = "vape private custom | v2.7"
+GuiLibrary["MainGui"].ScaledGui.ClickGui.Version.Position = UDim2.new(1, -175 - 20, 1, -25)
